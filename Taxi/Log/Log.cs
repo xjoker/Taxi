@@ -333,13 +333,13 @@ namespace Taxi.Log
         /// 日志写入，传入类型为Exception
         /// </summary>
         /// <param name="e">Exception 类型</param>
-        public void LogWrite(Exception ex)
+        public void LogWrite(Exception ex,string errorMessage="")
         {
             var trace = new StackTrace(ex, true);
             var frame = trace.GetFrames().Last();
             var lineNumber = frame.GetFileLineNumber();
             var fileName = frame.GetFileName();
-            LogWrite(new LogType(DateTime.Now, lineNumber, LogLevel.Error, frame.GetMethod().Name, ex.Message,ex.ToString()));
+            LogWrite(new LogType(DateTime.Now, lineNumber, LogLevel.Error, frame.GetMethod().Name, errorMessage,ex.ToString()));
         }
 
         /// <summary>

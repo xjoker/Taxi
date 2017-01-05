@@ -45,6 +45,7 @@
     <Compile Include="DateTimeHelper\DateTimeHelper.cs" />
     <Compile Include="Dictionary\DictionaryHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\AESEncryptsAndDecrypts.cs" />
+    <Compile Include="EncryptsAndDecrypts\TokenHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\UnixMd5CryptTool.cs" />
     <Compile Include="FileHelper\FileHelper.cs" />
     <Compile Include="Log\Log.cs" />

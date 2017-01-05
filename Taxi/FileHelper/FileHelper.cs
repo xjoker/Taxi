@@ -233,7 +233,7 @@ namespace Taxi.FileHelper
             }
             catch (Exception ex)
             {
-                LogHelper.Instance.LogWrite(ex);
+                LogHelper.Instance.LogWrite(ex.ToString());
                 return false;
             }
         }
