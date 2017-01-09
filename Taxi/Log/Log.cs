@@ -100,6 +100,17 @@ namespace Taxi.Log
             set { _fileNamePrefix = value; }
         }
 
+        private string _logDirectoryName = "LogFile";
+
+        /// <summary>
+        /// 日志存储的主目录名称
+        /// </summary>
+        public string LogDirectoryName
+        {
+            get { return _logDirectoryName; }
+            set { _logDirectoryName = value; }
+        }
+
         /// <summary>  
         /// 单个日志文件默认大小(单位：兆)  
         /// </summary> 
@@ -259,7 +270,7 @@ namespace Taxi.Log
             string year = currentDate.ToString("yyyy");
             string month = currentDate.ToString("MM");
             //   年/年月
-            string subdir = string.Concat(year, '\\', year+month,'\\');
+            string subdir = string.Concat(_logDirectoryName,'\\', year, '\\', year+month,'\\');
             string path = Path.Combine(LogDirectory, subdir);
             if (!Directory.Exists(path))
             {
