@@ -11,12 +11,12 @@ namespace Taxi.Dictionary.Tests
     [TestClass()]
     public class DictionaryHelperTests
     {
-        private Dictionary<int, string> a = new Dictionary<int, string>() { { 1, "q" }, { 2, "w" } };
-        private Dictionary<int, string> b = new Dictionary<int, string>() { { 3, "z" }, { 4, "x" } };
-        private Dictionary<int, string> c = new Dictionary<int, string>() { { 1, "z" }, { 4, "x" } };
+        private Dictionary<int, string> a = new Dictionary<int, string>() { [1] = "q", [2] = "w" };
+        private Dictionary<int, string> b = new Dictionary<int, string>() { [3] = "z", [4] = "x" };
+        private Dictionary<int, string> c = new Dictionary<int, string>() { [1] = "z", [4] = "x" };
 
-        private Dictionary<int, string> d = new Dictionary<int, string>() { { 1, "q" }, { 2, "w" },{ 3, "z" }, { 4, "x" } };
-        private Dictionary<int, string> e = new Dictionary<int, string>() { { 1, "z" }, { 2, "w" }, { 4, "x" } };
+        private Dictionary<int, string> d = new Dictionary<int, string>() { [1] = "q", [2] = "w", [3] = "z", [4] = "x" };
+        private Dictionary<int, string> e = new Dictionary<int, string>() { [1] = "q", [2] = "w", [4] = "x" };
 
         [TestMethod()]
         public void MergeDictionaryAddTest()
@@ -33,14 +33,14 @@ namespace Taxi.Dictionary.Tests
         [TestMethod()]
         public void GetValueTest()
         {
-            var aa=a.GetValue(1);
+            var aa = a.GetValue(1);
             Assert.IsTrue(aa == "q");
         }
 
         [TestMethod()]
         public void AddRangeTest()
         {
-            var aa=a.AddRange(b,true);
+            var aa = a.AddRange(b, true);
             Assert.IsTrue(aa.SequenceEqual(d));
         }
     }
