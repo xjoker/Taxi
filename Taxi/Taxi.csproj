@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,9 +49,11 @@
     <Compile Include="EncryptsAndDecrypts\TokenHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\UnixMd5CryptTool.cs" />
     <Compile Include="FileHelper\FileHelper.cs" />
+    <Compile Include="FileHelper\WindowsShareFolder.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="String\StringHelper.cs" />
+    <Compile Include="System\CheckRunAs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

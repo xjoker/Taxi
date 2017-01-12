@@ -93,6 +93,17 @@ namespace Taxi.StringHelper
         }
 
         /// <summary>
+        /// 字符串相等判断
+        /// </summary>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <returns></returns>
+        public static bool IsEqualsString(this string s1,string s2)
+        {
+            return string.Equals(s1, s2);
+        }
+
+        /// <summary>
         /// 将文本快速写入文件
         /// </summary>
         /// <param name="s"></param>
