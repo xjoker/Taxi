@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Management;
+using System.Security.Principal;
 using Taxi.StringHelper;
 using Taxi.SystemHelper;
 
@@ -15,7 +16,7 @@ namespace Taxi.Network
         /// <param name="FolderPath">共享文件夹的路径</param>
         /// <param name="ShareName">共享名</param>
         /// <param name="Description">备注</param>
-        public static void ShareFolder(string FolderPath, string ShareName, string Description)
+        public static void ShareFolder(string FolderPath, string ShareName, string Description="", ManagementObject Acl = null)
         {
             if (FolderPath.IsNullOrWhiteSpace())
             {
@@ -25,11 +26,6 @@ namespace Taxi.Network
             if (ShareName.IsNullOrWhiteSpace())
             {
                 throw new ArgumentNullException("ShareName");
-            }
-
-            if (Description.IsNullOrWhiteSpace())
-            {
-                throw new ArgumentNullException("Description");
             }
 
             if (!FileHelper.FileHelper.DirectoryExists(FolderPath))
@@ -50,6 +46,10 @@ namespace Taxi.Network
                     inParams["Name"] = ShareName;
                     inParams["Path"] = FolderPath;
                     inParams["Type"] = Win32ShareType.ShareType.DiskDrive;
+                    if (Acl != null)
+                    {
+                        inParams["Access"] = Acl;
+                    }
                     outParams = managementClass.InvokeMethod("Create", inParams, null);
                     // Check to see if the method invocation was successful
                     if ((uint)(outParams.Properties["ReturnValue"].Value) != 0)
@@ -119,6 +119,59 @@ namespace Taxi.Network
         }
     }
 
+
+    public class Win32_Ace
+    {
+        /// <summary>
+        /// 共享文件夹权限设定
+        /// 这个类内含检测传入用户名对应的SID功能
+        /// 要求必须在本机上才可获取，如果不在本机内需要传入
+        /// SecurityIdentifier 类型
+        /// </summary>
+        /// <param name="Username"></param>
+        /// <param name="s"></param>
+        /// <param name="ACL"></param>
+        /// <param name="AceFlags"></param>
+        /// <param name="AceType"></param>
+        /// <returns></returns>
+        public ManagementObject SecurityDescriptor(
+            string Username,
+            SecurityIdentifier s = null,
+            Win32ShareType.ShareAccessMask ACL = Win32ShareType.ShareAccessMask.read,
+            int AceFlags = 3,
+            Win32ShareType.ShareAceType AceType = 0
+            )
+        {
+            if (s == null)
+            {
+                try
+                {
+                    NTAccount f = new NTAccount(Username);
+                    s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                }
+                catch
+                {
+                    throw new WindowsShareFolderException("Get User SID error!");
+                }
+            }
+
+            byte[] sidArray = new byte[s.BinaryLength];
+            s.GetBinaryForm(sidArray, 0);
+            ManagementObject Trustee = new ManagementClass(new ManagementPath("Win32_Trustee"), null);
+            Trustee["Name"] = Username;
+            Trustee["SID"] = sidArray;
+            ManagementObject ACE = new ManagementClass(new ManagementPath("Win32_Ace"), null);
+            ACE["AccessMask"] = ACL;
+            ACE["AceFlags"] = AceFlags;
+            ACE["AceType"] = AceType;
+            ACE["Trustee"] = Trustee;
+            ManagementObject SecDesc = new ManagementClass(new ManagementPath("Win32_SecurityDescriptor"), null);
+            SecDesc["ControlFlags"] = 4;
+            SecDesc["DACL"] = new object[] { ACE };
+            return SecDesc;
+        }
+    }
+
     /// <summary>
     /// Windows 共享类
     /// </summary>
@@ -150,7 +203,44 @@ namespace Taxi.Network
             IpcAdmin = 0x80000003 	//IPC Admin
         }
 
+        /*
+        AccessMask
 
+        fullcontrol = 2032127
+        change = 1245631
+        read = 1179785
+
+        */
+        public enum ShareAccessMask : uint
+        {
+            fullcontrol = 2032127,
+            change = 1245631,
+            read = 1179785
+        }
+
+        /*
+        AceFlags
+
+        */
+
+        public enum ShareAceFlags : int
+        {
+            OBJECT_INHERIT_ACE = 1,
+            CONTAINER_INHERIT_ACE = 2,
+            NO_PROPAGATE_INHERIT_ACE = 4,
+            INHERIT_ONLY_ACE = 8,
+            INHERITED_ACE = 16,
+            SUCCESSFUL_ACCESS_ACE_FLAG = 64,
+            FAILED_ACCESS_ACE_FLAG = 128
+        }
+
+
+        public enum ShareAceType : int
+        {
+            Allow = 0,
+            Deny = 1,
+            SystemAudit = 2
+        }
         private ManagementObject mWinShareObject;
 
 
@@ -202,6 +292,19 @@ namespace Taxi.Network
         public ShareType Type
         {
             get { return (ShareType)Convert.ToUInt32(mWinShareObject["Type"]); }
+        }
+    }
+
+    class WindowsShareFolderException : ApplicationException
+    {
+        public WindowsShareFolderException(string message) : base(message) { }
+
+        public override string Message
+        {
+            get
+            {
+                return base.Message;
+            }
         }
     }
 }
