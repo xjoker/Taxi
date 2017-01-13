@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Principal;
 
-namespace Taxi.System
+namespace Taxi.SystemHelper
 {
     public static class CheckRunAs
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Management;
 using Taxi.StringHelper;
-using Taxi.System;
+using Taxi.SystemHelper;
 
-namespace Taxi.FileHelper
+namespace Taxi.Network
 {
     public static class WindowsShareFolder
     {
@@ -32,7 +32,7 @@ namespace Taxi.FileHelper
                 throw new ArgumentNullException("Description");
             }
 
-            if (!FileHelper.DirectoryExists(FolderPath))
+            if (!FileHelper.FileHelper.DirectoryExists(FolderPath))
             {
                 throw new Exception("Directory not exists!");
             }

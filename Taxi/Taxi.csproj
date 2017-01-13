@@ -49,12 +49,13 @@
     <Compile Include="EncryptsAndDecrypts\TokenHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\UnixMd5CryptTool.cs" />
     <Compile Include="FileHelper\FileHelper.cs" />
-    <Compile Include="FileHelper\WindowsShareFolder.cs" />
+    <Compile Include="Network\WindowsShareFolder.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="String\StringHelper.cs" />
-    <Compile Include="System\CheckRunAs.cs" />
+    <Compile Include="SystemHelper\CheckRunAs.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
