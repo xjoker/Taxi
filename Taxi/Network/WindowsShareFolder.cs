@@ -137,7 +137,7 @@ namespace Taxi.Network
         public ManagementObject SecurityDescriptor(
             string Username,
             SecurityIdentifier s = null,
-            Win32ShareType.ShareAccessMask ACL = Win32ShareType.ShareAccessMask.read,
+            Win32ShareType.ShareAccessMask ACL = Win32ShareType.ShareAccessMask.Read,
             int AceFlags = 3,
             Win32ShareType.ShareAceType AceType = 0
             )
@@ -213,9 +213,9 @@ namespace Taxi.Network
         */
         public enum ShareAccessMask : uint
         {
-            fullcontrol = 2032127,
-            change = 1245631,
-            read = 1179785
+            FullControl = 2032127,
+            ReadAndWrite = 1245631,
+            Read = 1179785
         }
 
         /*
