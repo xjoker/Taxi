@@ -49,6 +49,7 @@
     <Compile Include="EncryptsAndDecrypts\TokenHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\UnixMd5CryptTool.cs" />
     <Compile Include="FileHelper\FileHelper.cs" />
+    <Compile Include="Network\NetworkTools.cs" />
     <Compile Include="Network\WindowsShareFolder.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
