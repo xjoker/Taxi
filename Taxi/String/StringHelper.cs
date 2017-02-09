@@ -3,6 +3,7 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Xml;
 using System.Xml.Linq;
+using System;
 
 namespace Taxi.StringHelper
 {
@@ -102,6 +103,19 @@ namespace Taxi.StringHelper
         {
             return string.Equals(s1, s2);
         }
+
+        /// <summary>
+        /// 忽略大小写对比
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="toCheck"></param>
+        /// <param name="comp"></param>
+        /// <returns></returns>
+        public static bool ContainsIgnoreCase(this string source, string toCheck)
+        {
+            return source.ToUpper().Contains(toCheck.ToUpper());
+        }
+
 
         /// <summary>
         /// 将文本快速写入文件

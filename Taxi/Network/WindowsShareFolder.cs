@@ -215,7 +215,7 @@ namespace Taxi.Network
         {
             FullControl = 2032127,
             ReadAndWrite = 1245631,
-            Read = 1179785
+            Read = 1179817
         }
 
         /*
