@@ -16,7 +16,7 @@ namespace Taxi.Dictionary.Tests
         private Dictionary<int, string> c = new Dictionary<int, string>() { [1] = "z", [4] = "x" };
 
         private Dictionary<int, string> d = new Dictionary<int, string>() { [1] = "q", [2] = "w", [3] = "z", [4] = "x" };
-        private Dictionary<int, string> e = new Dictionary<int, string>() { [1] = "q", [2] = "w", [4] = "x" };
+        private Dictionary<int, string> e = new Dictionary<int, string>() { [1] = "z", [2] = "w", [4] = "x" };
 
         [TestMethod()]
         public void MergeDictionaryAddTest()
