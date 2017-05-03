@@ -12,7 +12,8 @@ namespace Taxi.Log.Tests
         {
             LogHelper.Instance.LogWrite("233");
             DateTime now = DateTime.Now;
-            Assert.IsTrue(File.Exists(Path.Combine(LogHelper.Instance.LogDirectory, LogHelper.Instance.FileNamePrefix+now.ToString("yyyyMMdd'.log'"))));
+            var a= Path.Combine(LogHelper.Instance.LogDirectory, LogHelper.Instance.FileNamePrefix + now.ToString("yyyyMMdd'.log'"));
+            Assert.IsTrue(File.Exists(a));
         }
 
     }

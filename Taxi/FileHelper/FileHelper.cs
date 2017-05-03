@@ -285,9 +285,14 @@ namespace Taxi.FileHelper
         /// 创建目录
         /// </summary>
         /// <param name="path"></param>
-        public static void CreateDirectory(string path)
+        public static bool CreateDirectory(string path)
         {
-            Directory.CreateDirectory(path);
+            string directoryName = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+            return Directory.Exists(directoryName);
         }
 
         /// <summary>
