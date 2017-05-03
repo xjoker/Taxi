@@ -23,5 +23,29 @@ namespace Taxi.Array
             }
             return stringBuilder.ToString();
         }
+
+        /// <summary>
+        /// 慢速比较byte类型
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool SlowEquals(byte[] a, byte[] b)
+        {
+            if (a == null && b == null)
+            {
+                return true;
+            }
+            if (a == null || b == null || a.Length != b.Length)
+            {
+                return false;
+            }
+            uint num = (uint)(a.Length ^ b.Length);
+            for (int i = 0; i < a.Length; i++)
+            {
+                num |= (uint)(a[i] ^ b[i]);
+            }
+            return num == 0u;
+        }
     }
 }

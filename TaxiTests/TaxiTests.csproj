@@ -55,6 +55,7 @@
     <Compile Include="DateTimeHelper\DateTimeHelperTests.cs" />
     <Compile Include="Dictionary\DictionaryHelperTests.cs" />
     <Compile Include="EncryptsAndDecrypts\AESEncryptsAndDecryptsTests.cs" />
+    <Compile Include="EncryptsAndDecrypts\PasswordHashTests.cs" />
     <Compile Include="FileHelper\FileHelperTests.cs" />
     <Compile Include="Log\LogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
