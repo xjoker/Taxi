@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Taxi.StringHelper;
+using System.Threading;
 
 namespace Taxi.FileHelper.Tests
 {
@@ -41,6 +42,11 @@ namespace Taxi.FileHelper.Tests
             FileHelper.WriteFile(path, a);
             var b = FileHelper.ReadFile(path);
             Assert.IsTrue(a == b);
+            Thread.Sleep(1000);
+            FileHelper.WriteFile(path, "666",true);
+            var c = FileHelper.ReadFile(path);
+            Assert.IsTrue(a+"666" == c);
+
         }
 
     }

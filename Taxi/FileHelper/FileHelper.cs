@@ -199,9 +199,9 @@ namespace Taxi.FileHelper
         /// </summary>
         /// <param name="filePath">文件路径</param>
         /// <param name="content">内容</param>
-        public static bool WriteFile(string filePath, string content)
+        public static bool WriteFile(string filePath, string content, bool appends=false)
         {
-            return WriteFile(filePath, content, Encoding.UTF8);
+            return WriteFile(filePath, content, Encoding.UTF8,appends);
         }
 
         /// <summary>
@@ -210,19 +210,30 @@ namespace Taxi.FileHelper
         /// <param name="filePath">文件路径</param>
         /// <param name="content">内容</param>
         /// <param name="encoding">编码 Encoding类型</param>
-        public static bool WriteFile(string filePath, string content, Encoding encoding)
+        public static bool WriteFile(string filePath, string content, Encoding encoding,bool appends=false)
         {
             try
             {
-                if (File.Exists(filePath))
+                long position = 0;
+                if (File.Exists(filePath)&&appends==false)
                 {
                     File.Delete(filePath);
+                }
+                if (appends && File.Exists(filePath))
+                {
+                    var fs = File.OpenRead(filePath);
+                    position = fs.Length;
+                    fs.Close();
                 }
                 using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
                 {
                     Encoding encode = encoding;
                     //获得字节数组
                     byte[] data = encode.GetBytes(content);
+                    if (appends)
+                    {
+                        stream.Position = position;
+                    }
                     //开始写入
                     stream.Write(data, 0, data.Length);
                     //清空缓冲区、关闭流
