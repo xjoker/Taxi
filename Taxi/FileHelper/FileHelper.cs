@@ -199,6 +199,7 @@ namespace Taxi.FileHelper
         /// </summary>
         /// <param name="filePath">文件路径</param>
         /// <param name="content">内容</param>
+        /// <param name="appends">是否启用追加模式</param>
         public static bool WriteFile(string filePath, string content, bool appends=false)
         {
             return WriteFile(filePath, content, Encoding.UTF8,appends);
@@ -210,6 +211,7 @@ namespace Taxi.FileHelper
         /// <param name="filePath">文件路径</param>
         /// <param name="content">内容</param>
         /// <param name="encoding">编码 Encoding类型</param>
+        /// <param name="appends">是否启用追加模式</param>
         public static bool WriteFile(string filePath, string content, Encoding encoding,bool appends=false)
         {
             try

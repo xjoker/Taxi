@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management;
-using System.Text;
-using System.Threading.Tasks;
-using Taxi.SystemHelper;
+﻿using System.Management;
 using Taxi.StringHelper;
+using Taxi.SystemHelper;
 
 namespace Taxi.Network
 {
-    class NetworkTools
+    public class NetworkTools
     {
         /// <summary>
         /// Ping测试

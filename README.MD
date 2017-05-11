@@ -1,0 +1,124 @@
+# Taxi 库是个人对于C#常用功能封装
+
+===
+
+[![Build status](https://ci.appveyor.com/api/projects/status/rc9wdig6s5oiw227?svg=true)](https://ci.appveyor.com/project/xjoker/taxi)
+[![NuGet version](https://badge.fury.io/nu/Taxi.png)](https://badge.fury.io/nu/Taxi)
+
+## 目前支持功能：
+
+### 数组操作类
+* ArrayHelper.JoinToString 数组转为String类型
+* ArrayHelper.SlowEquals 慢速比较byte类型
+
+
+### 时间类
+* DateTimeHelper.StampToDateTime 将UNIX时间戳转为时间
+* DateTimeHelper.DateTimeToStamp 将DateTime时间格式转换为Unix时间戳格式
+* DateTimeHelper.LastDayOfMonth 取得某月的第一天
+* DateTimeHelper.FirstDayOfPreviousMonth 取得上个月第一天
+* DateTimeHelper.LastDayOfPrdviousMonth 取得上个月的最后一天
+
+
+### 字典类型
+* DictionaryHelper.MergeDictionaryAdd 字典合并拓展 如果不存在key才添加，存在则不报错直接忽略
+* DictionaryHelper.MergeDictionaryReplace 字典合并拓展 如果不存在key则添加，存在则替换,替换法则为second替换first
+* DictionaryHelper.GetValue 获取字典key的值，如果没有结果则返回空或者指定的值
+* DictionaryHelper.AddRange 向字典中批量添加键值对
+
+
+### AES
+* AESEncryptsAndDecrypts.Encrypt AES 加密模块
+* AESEncryptsAndDecrypts.Decrypt AES 解密模块
+
+
+### 密码加密/校验
+* PasswordHash.CreateHash 密码加密方法 sha1
+* PasswordHash.ValidatePassword 校验密码
+
+
+### Token生成和校验
+* TokenHelper.GenTokenString 只生成TOKEN不返回GUID
+* TokenHelper.CheckTokenBool 只返回校验结果不返回GUID
+* TokenHelper.GenToken 用于生成TOKEN 返回key为GUID,value为token
+* TokenHelper.CheckToken 用于校验TOKEN是否过期 
+
+
+### htpasswd 加密
+* UnixMd5CryptTool.crypt Apache MD5加密
+
+
+### 文件类
+* FileHelper.ReadFile 读取文件
+* FileHelper.SetDirectoryAccessRule 设定目录完全访问权限
+* FileHelper.GetParentDirectoryName 返回上层路径的文件夹名
+* FileHelper.GetGrampaDirectoryName 返回当前路径上两层的文件夹名
+* FileHelper.IsSubdirectory 判断是否为子目录
+* FileHelper.EnsureTrailingSlash 为目录路径结尾增加"/"
+* FileHelper.GetAbsolutePath 获取绝对路径
+* FileHelper.EnsureTrailingCharacter 路径尾部增加字符
+* FileHelper.ReadFileForAll 一次性读取文件所有内容
+* FileHelper.WriteFile 写入文件 (自定义编码) 重载：(以UTF-8格式写入文件)
+* FileHelper.GetFileList 搜索路径下特定名称的文件并返回
+* FileHelper.DirectoryExists 目录是否存在
+* FileHelper.FileExists 文件是否存在
+* FileHelper.OpenFile 打开文件(返回Stream)
+* FileHelper.CreateDirectory 创建目录
+* FileHelper.AddFile Stream流写入文件
+* FileHelper.MoveFile 移动文件，路径需完整并且包含源/目标文件名
+
+
+### ini 文件操作
+* IniFileHelper.ReadSections 返回该配置文件中所有Section名称的集合
+* IniFileHelper.ReadKeys  获取节点的所有KEY值
+* IniFileHelper.IniWriteValue 写INI文件
+* IniFileHelper.IniReadValue 读取INI文件
+* IniFileHelper.ClearAllSection 删除ini文件下所有段落
+* IniFileHelper.ClearSection 删除ini文件下personal段落下的所有键
+
+
+### List类
+* ListHelper.GetLast 获取List内最后一个元素
+* ListHelper.Search List 搜索功能
+
+
+### 简便的日志类
+* LogHelper.LogWrite 日志写入
+
+
+### 网络检测
+* NetworkTools.Ping  Ping测试
+* NetworkTools.DomainToIP  域名解析为IP地址
+
+
+### Windows 共享操作
+* WindowsShareFolder.ShareFolder 文件夹共享
+* WindowsShareFolder.Delete 删除共享
+* WindowsShareFolder.GetLocalPathForShare 获取共享名称对应路径
+* WindowsShareFolder.ShareFolder 文件夹共享
+* WindowsShareFolder.ShareFolder 文件夹共享
+
+
+### String 类
+* StringHelper.Decode 转换为指定编码
+* StringHelper.IsNullOrEmpty 封装 IsNullOrEmpty为Bool
+* StringHelper.IsNullOrWhiteSpace 封装 IsNullOrWhiteSpace为Bool
+* StringHelper.IsInt 判断是否为int类型
+* StringHelper.ToInt 转换为int类型
+* StringHelper.IsValidJson 鉴定是否为JSON格式
+* StringHelper.IsEqualsString 字符串相等判断
+* StringHelper.ContainsIgnoreCase 忽略大小写对比
+* StringHelper.WriteToFile 将文本快速写入文件
+* StringHelper.Decode 转换为指定编码
+* StringHelper.Decode 转换为指定编码
+* StringHelper.Decode 转换为指定编码
+
+
+### 系统类
+* CheckRunAs.IsRunAsAdmin 检测程序当前是否以管理员级别启动
+* CheckRunAs.RunAsUser 获取当前启动的用户名称
+
+
+### WMI
+* WMIHelper.WMIRemoteQueryHelper  WMI 远程查询帮助类 多个重载
+* WMIHelper.WMIQueryHelper  WMI 查询帮助类 多个重载

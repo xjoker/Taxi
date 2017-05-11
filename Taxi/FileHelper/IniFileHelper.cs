@@ -35,7 +35,10 @@ namespace Taxi.FileHelper
         public extern static int GetPrivateProfileSectionNamesA(byte[] buffer, int iLen, string fileName);
 
         #endregion
+        /// <summary>
         /// 返回该配置文件中所有Section名称的集合
+        /// </summary>
+        /// <returns></returns>
         public ArrayList ReadSections()
         {
             byte[] buffer = new byte[65535];
@@ -60,7 +63,11 @@ namespace Taxi.FileHelper
             return arrayList;
         }
 
-        // 获取节点的所有KEY值
+        /// <summary>
+        /// 获取节点的所有KEY值
+        /// </summary>
+        /// <param name="sectionName">节点名称</param>
+        /// <returns></returns>
         public ArrayList ReadKeys(string sectionName)
         {
 
