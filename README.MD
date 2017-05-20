@@ -104,6 +104,8 @@
 * NetworkTools.PingDelay  Ping测试延时
 * NetworkTools.PingCheckDetailed  PING 检测，可定义次数和间隔
 * NetworkTools.DomainToIP  域名解析为IP地址
+* NetworkTools.GetLocalIPs  获取本机所有网卡的IP地址
+* NetworkTools.GetLocalMacs  获取本机所有网卡的MAC地址
 
 
 ### Windows 共享操作

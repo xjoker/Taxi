@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Management;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
@@ -80,7 +81,7 @@ namespace Taxi.Network
         /// <param name="count"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public static PingResponseType PingCheckDetailed(string host, int count = 4, int interval=1000)
+        public static PingResponseType PingCheckDetailed(string host, int count = 4, int interval = 1000)
         {
             PingResponseType prt = new PingResponseType();
             long delaySum = 0;
@@ -97,7 +98,7 @@ namespace Taxi.Network
                     }
                     if (temp.RoundtripTime > prt.Maximum) prt.Maximum = temp.RoundtripTime;
                     if (temp.RoundtripTime < prt.Minimum) prt.Minimum = temp.RoundtripTime;
-                    
+
                     delaySum = delaySum + temp.RoundtripTime;
                 }
                 Thread.Sleep(interval);
@@ -116,6 +117,47 @@ namespace Taxi.Network
         {
             var p = WMIHelper.WMIQueryHelper(new ManagementScope("\\root\\cimv2"), new SelectQuery("Win32_PingStatus", $"Address='{host}'"));
             return p[0]["ProtocolAddress"].IsNullOrWhiteSpace() ? null : p[0]["ProtocolAddress"];
+        }
+
+        /// <summary>
+        /// 获取本机所有网卡的IP地址
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetLocalIPs()
+        {
+            IPHostEntry ips = Dns.GetHostEntry(Dns.GetHostName());
+            List<string> list = new List<string>();
+            if (ips.AddressList.Length > 0)
+            {
+                foreach (IPAddress address in ips.AddressList)
+                {
+                    if (address.AddressFamily.ToString().Equals("InterNetwork"))
+                    {
+                        list.Add(address.ToString());
+                    }
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取本机所有网卡的MAC地址
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetLocalMacs()
+        {
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            List<string> list = new List<string>();
+            foreach (var o in mc.GetInstances())
+            {
+                var mo = (ManagementObject)o;
+                if (System.Convert.ToBoolean(mo["IPEnabled"]))
+                {
+                    list.Add(mo["MacAddress"].ToString());
+                }
+            }
+            mc.Dispose();
+            return list;
         }
     }
 }

@@ -38,5 +38,19 @@ namespace Taxi.Network.Tests
             var b = NetworkTools.PingDelay("baidu.com");
             Assert.IsFalse(b == null);
         }
+
+        [TestMethod()]
+        public void GetLocalIPsTest()
+        {
+            var b = NetworkTools.GetLocalIPs();
+            Assert.IsFalse(b == null);
+        }
+
+        [TestMethod()]
+        public void GetLocalMacsTest()
+        {
+            var b = NetworkTools.GetLocalMacs();
+            Assert.IsFalse(b == null);
+        }
     }
 }
