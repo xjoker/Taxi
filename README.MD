@@ -142,3 +142,10 @@
 ### WMI
 * WMIHelper.WMIRemoteQueryHelper  WMI 远程查询帮助类 多个重载
 * WMIHelper.WMIQueryHelper  WMI 查询帮助类 多个重载
+
+### 随机帮助类
+* RandomHelper.GenerateRandomNumber 生成随机数字,取值范围为(0-9)
+* RandomHelper.GenerateRandomString 生成随机字符串,字符范围为(0-9 a-b A-B)
+* RandomHelper.GenerateRandomString 生成随机字符串,字符范围为(a-b)或者(A-B)
+* RandomHelper.GenerateRandomPassword 生成随机密码
+* RandomHelper.GetRandomString  随机类的基础生成方法

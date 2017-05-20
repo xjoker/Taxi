@@ -61,6 +61,7 @@
     <Compile Include="Log\LogTests.cs" />
     <Compile Include="Network\NetworkToolsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomHelper\RandomHelperTests.cs" />
     <Compile Include="String\StringHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
