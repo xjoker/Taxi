@@ -18,6 +18,12 @@
 * DateTimeHelper.LastDayOfMonth 取得某月的第一天
 * DateTimeHelper.FirstDayOfPreviousMonth 取得上个月第一天
 * DateTimeHelper.LastDayOfPrdviousMonth 取得上个月的最后一天
+* DateTimeHelper.LastDayOfYear 获取年份的最后一天
+* DateTimeHelper.GetWeekDayEnglish 获取星期X 描述(英文)
+* DateTimeHelper.GetWeekDayChinese 获取星期X 描述(中文)
+* DateTimeHelper.FormatDate 格式化日期 重载：(格式 yyyy-MM-dd HH:mm:ss) (格式yyyy-MM-dd)
+* DateTimeHelper.IsLeapYear 判断年份是否为闰年
+* DateTimeHelper.IsWeekEnd 判断日期是否为周末 可选是否不判断周六
 
 
 ### 字典类型
@@ -25,6 +31,7 @@
 * DictionaryHelper.MergeDictionaryReplace 字典合并拓展 如果不存在key则添加，存在则替换,替换法则为second替换first
 * DictionaryHelper.GetValue 获取字典key的值，如果没有结果则返回空或者指定的值
 * DictionaryHelper.AddRange 向字典中批量添加键值对
+* DictionaryHelper.DictionarySort 字典简单排序(默认以值做基准正向排序)
 
 
 ### AES
@@ -66,6 +73,11 @@
 * FileHelper.CreateDirectory 创建目录
 * FileHelper.AddFile Stream流写入文件
 * FileHelper.MoveFile 移动文件，路径需完整并且包含源/目标文件名
+* FileHelper.GetAllDirectorys 获取一个目录下的所有目录(递归实现)
+* FileHelper.GetAllFiles 获取一个目录下的所有文件(递归实现)
+* FileHelper.RenameFile 文件重命名
+* FileHelper.GetFileMD5 计算文件MD5值
+* FileHelper.GetFileSHA1 计算文件SHA1值
 
 
 ### ini 文件操作

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Taxi.Dictionary
 {
@@ -81,6 +82,52 @@ namespace Taxi.Dictionary
                     dict[item.Key] = item.Value;
             }
             return dict;
+        }
+
+        /// <summary>
+        /// 字典简单排序(默认以值做基准正向排序)
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict">字典</param>
+        /// <param name="desc">排序模式，默认正向</param>
+        /// <param name="byKey">以KEY为基准排序</param>
+        /// <param name="byValue">以值为基准排序</param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> DictionarySort<TKey, TValue>(this Dictionary<TKey, TValue> dict, bool desc = false, bool byKey = false, bool byValue = true)
+        {
+            if (dict == null) return dict;
+            IOrderedEnumerable<KeyValuePair<TKey, TValue>> temp = null;
+            if (desc)
+            {
+                if (byValue)
+                {
+                    temp = from objDict in dict orderby objDict.Value descending select objDict;
+                }
+                else
+                {
+                    temp = from objDict in dict orderby objDict.Key descending select objDict;
+                }
+
+            }
+            else
+            {
+                if (byValue)
+                {
+                    temp = from objDict in dict orderby objDict.Value select objDict;
+                }
+                else
+                {
+                    temp = from objDict in dict orderby objDict.Key select objDict;
+                }
+            }
+
+            Dictionary<TKey, TValue> t = new Dictionary<TKey, TValue>();
+            foreach (var item in temp)
+            {
+                t.Add(item.Key, item.Value);
+            }
+            return t;
         }
     }
 }

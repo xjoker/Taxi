@@ -56,5 +56,13 @@ namespace Taxi.DateTimeHelper.Tests
             DateTime bb = Convert.ToDateTime("2016/12/31 16:40:53");
             Assert.IsTrue(aa == bb);
         }
+
+        [TestMethod()]
+        public void GetWeekDayTest()
+        {
+            var aa = new DateTime(2017,5,20);
+            var dd= DateTimeHelper.GetWeekDayEnglish(aa);
+            Assert.IsTrue("Saturday"==dd);
+        }
     }
 }

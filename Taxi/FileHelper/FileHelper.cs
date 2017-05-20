@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Text;
 using Taxi.Log;
 
@@ -200,9 +202,9 @@ namespace Taxi.FileHelper
         /// <param name="filePath">文件路径</param>
         /// <param name="content">内容</param>
         /// <param name="appends">是否启用追加模式</param>
-        public static bool WriteFile(string filePath, string content, bool appends=false)
+        public static bool WriteFile(string filePath, string content, bool appends = false)
         {
-            return WriteFile(filePath, content, Encoding.UTF8,appends);
+            return WriteFile(filePath, content, Encoding.UTF8, appends);
         }
 
         /// <summary>
@@ -212,12 +214,12 @@ namespace Taxi.FileHelper
         /// <param name="content">内容</param>
         /// <param name="encoding">编码 Encoding类型</param>
         /// <param name="appends">是否启用追加模式</param>
-        public static bool WriteFile(string filePath, string content, Encoding encoding,bool appends=false)
+        public static bool WriteFile(string filePath, string content, Encoding encoding, bool appends = false)
         {
             try
             {
                 long position = 0;
-                if (File.Exists(filePath)&&appends==false)
+                if (File.Exists(filePath) && appends == false)
                 {
                     File.Delete(filePath);
                 }
@@ -361,5 +363,110 @@ namespace Taxi.FileHelper
                 return false;
             }
         }
+
+
+        /// <summary>
+        /// 获取一个目录下的所有目录(递归实现)
+        /// </summary>
+        /// <param name="list">存储列表</param>
+        /// <param name="dir">目录路径</param>
+        /// <returns></returns>
+        public static List<string> GetAllDirectorys(string dir)
+        {
+            List<string> list = new List<string>();
+            string[] dirs = Directory.GetDirectories(dir);
+            if (dirs.Length == 0)
+            {
+                return list;
+            }
+            foreach (string item in dirs)
+            {
+                list.Add(item);
+                list.AddRange(GetAllDirectorys(item));
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取一个目录下的所有文件(递归实现)
+        /// </summary>
+        /// <param name="list">存储列表</param>
+        /// <param name="dir">目录路径</param>
+        /// <returns>返回目录下所有文件列表</returns>
+        public  static List<string> GetAllFiles(string dir)
+        {
+            List<string> list = new List<string>();
+            if (!Directory.Exists(dir)) return list;
+            string[] fileNames = Directory.GetFiles(dir);
+            string[] directories = Directory.GetDirectories(dir);
+            list.AddRange(fileNames);
+            foreach (string item in directories)
+            {
+                list.AddRange(GetAllFiles(item));
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 文件重命名
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        public static bool RenameFile(string sourceFileName, string newName)
+        {
+            string dir = new FileInfo(sourceFileName).DirectoryName;
+            string newpath = Path.Combine(dir, newName);
+            return MoveFile(sourceFileName, newpath);
+        }
+
+        /// <summary>
+        /// 计算文件MD5值
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetFileMD5(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    MD5 md5 = MD5.Create();
+                    return BitConverter.ToString(md5.ComputeHash(fs)).Replace("-", "");
+                }
+            }
+            return null;
+            
+        }
+
+        /// <summary>
+        /// 计算文件SHA1值
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetFileSHA1(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    using (BufferedStream bs = new BufferedStream(fs))
+                    {
+                        using (SHA1Managed sha1 = new SHA1Managed())
+                        {
+                            byte[] hash = sha1.ComputeHash(bs);
+                            StringBuilder formatted = new StringBuilder(2 * hash.Length);
+                            foreach (byte b in hash)
+                            {
+                                formatted.AppendFormat("{0:X2}", b);
+                            }
+                            return formatted.ToString();
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
+
 }

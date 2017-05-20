@@ -49,5 +49,11 @@ namespace Taxi.FileHelper.Tests
 
         }
 
+        [TestMethod()]
+        public void GetFileSHA1Test()
+        {
+            var ddd=FileHelper.GetFileMD5(@"D:\迅雷下载\linqer_4.6.0.0_trial.zip");
+            Assert.IsFalse(false);
+        }
     }
 }
