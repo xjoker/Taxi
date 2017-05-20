@@ -58,6 +58,7 @@
     <Compile Include="EncryptsAndDecrypts\PasswordHashTests.cs" />
     <Compile Include="FileHelper\FileHelperTests.cs" />
     <Compile Include="Log\LogTests.cs" />
+    <Compile Include="Network\NetworkToolsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="String\StringHelperTests.cs" />
   </ItemGroup>

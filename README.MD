@@ -99,7 +99,10 @@
 
 
 ### 网络检测
-* NetworkTools.Ping  Ping测试
+* NetworkTools.Ping  Ping测试 返回完整的PingReply
+* NetworkTools.PingCheck  Ping测试 返回是否能通
+* NetworkTools.PingDelay  Ping测试延时
+* NetworkTools.PingCheckDetailed  PING 检测，可定义次数和间隔
 * NetworkTools.DomainToIP  域名解析为IP地址
 
 

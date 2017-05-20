@@ -1,20 +1,110 @@
-﻿using System.Management;
+﻿using System.Collections.Generic;
+using System.Management;
+using System.Net.NetworkInformation;
+using System.Text;
+using System.Threading;
 using Taxi.StringHelper;
 using Taxi.SystemHelper;
 
 namespace Taxi.Network
 {
+    public class PingResponseType
+    {
+        private static int send = 0;
+        private static int received = 0;
+        private static int lost = send - received;
+        public long Minimum { get; set; }
+        public long Maximum { get; set; }
+        public long Average { get; set; }
+        public int Sent { get; set; }
+        public int Received { get; set; }
+        public int Lost { get; }
+    }
+
+
     public class NetworkTools
     {
         /// <summary>
-        /// Ping测试
+        /// PING方法
         /// </summary>
-        /// <param name="host">主机或IP</param>
-        /// <returns>返回延时，如果不通则返回NULL</returns>
-        public static string Ping(string host)
+        /// <param name="host">主机</param>
+        /// <param name="timeout">超时设定 默认3000</param>
+        /// <param name="bufferSize">包尺寸 默认32</param>
+        /// <returns></returns>
+        public static PingReply Ping(string host, int timeout = 3000, int bufferSize = 32)
         {
-            var p = WMIHelper.WMIQueryHelper(new ManagementScope("\\root\\cimv2"), new SelectQuery("Win32_PingStatus", $"Address='{host}'"));
-            return p[0]["ResponseTime"];
+            using (Ping p = new Ping())
+            {
+                PingOptions options = new PingOptions { DontFragment = true };
+                byte[] buffer = Encoding.ASCII.GetBytes(new string('a', bufferSize));
+                PingReply reply = p.Send(host, timeout, buffer, options);
+                return reply;
+            }
+        }
+
+        /// <summary>
+        /// PING 检测主机是否连通
+        /// </summary>
+        /// <param name="host">主机</param>
+        /// <returns></returns>
+        public static bool PingCheck(string host)
+        {
+            var temp = Ping(host);
+            if (temp.Status == IPStatus.Success)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// PING 检测主机延时
+        /// 如主机无法连通会返回NULL
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public static long? PingDelay(string host)
+        {
+            var temp = Ping(host);
+            if (temp.Status == IPStatus.Success)
+            {
+                return temp.RoundtripTime;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// PING 检测，可定义次数和间隔
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="count"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        public static PingResponseType PingCheckDetailed(string host, int count = 4, int interval=1000)
+        {
+            PingResponseType prt = new PingResponseType();
+            long delaySum = 0;
+            for (int i = 0; i < count; i++)
+            {
+                prt.Sent++;
+                var temp = Ping(host);
+                if (temp.Status == IPStatus.Success)
+                {
+                    prt.Received++;
+                    if (prt.Minimum == 0)
+                    {
+                        prt.Minimum = temp.RoundtripTime;
+                    }
+                    if (temp.RoundtripTime > prt.Maximum) prt.Maximum = temp.RoundtripTime;
+                    if (temp.RoundtripTime < prt.Minimum) prt.Minimum = temp.RoundtripTime;
+                    
+                    delaySum = delaySum + temp.RoundtripTime;
+                }
+                Thread.Sleep(interval);
+            }
+            prt.Average = delaySum / 4;
+
+            return prt;
         }
 
         /// <summary>
@@ -25,7 +115,7 @@ namespace Taxi.Network
         public static string DomainToIP(string host)
         {
             var p = WMIHelper.WMIQueryHelper(new ManagementScope("\\root\\cimv2"), new SelectQuery("Win32_PingStatus", $"Address='{host}'"));
-            return p[0]["ProtocolAddress"].IsNullOrWhiteSpace()?null: p[0]["ProtocolAddress"];
+            return p[0]["ProtocolAddress"].IsNullOrWhiteSpace() ? null : p[0]["ProtocolAddress"];
         }
     }
 }
