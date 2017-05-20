@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -22,6 +23,12 @@ namespace Taxi.Network
         public int Lost { get; }
     }
 
+    public class PortListType
+    {
+
+        public List<int> TcpPorts { get; set; }
+        public List<int> UdpPorts { get; set; }
+    }
 
     public class NetworkTools
     {
@@ -158,6 +165,61 @@ namespace Taxi.Network
             }
             mc.Dispose();
             return list;
+        }
+
+        /// <summary>
+        /// 获取所有在用状态的TCP/UDP端口
+        /// </summary>
+        /// <returns></returns>
+        public static PortListType GetAllUsePort()
+        {
+            List<int> tcpPorts = new List<int>();
+            List<int> udpPorts = new List<int>();
+
+            //获取本地计算机的网络连接和通信统计数据的信息 
+            IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+
+            //返回本地计算机上的所有Tcp监听程序 
+            IPEndPoint[] ipsTcp = ipGlobalProperties.GetActiveTcpListeners();
+
+            //返回本地计算机上的所有UDP监听程序 
+            IPEndPoint[] ipsUdp = ipGlobalProperties.GetActiveUdpListeners();
+
+            foreach (IPEndPoint ep in ipsTcp) tcpPorts.Add(ep.Port);
+            foreach (IPEndPoint ep in ipsUdp) udpPorts.Add(ep.Port);
+
+            return new PortListType() { TcpPorts = tcpPorts, UdpPorts = udpPorts };
+        }
+
+        /// <summary>
+        /// 检测TCP端口是否已被使用
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public static bool CheckTCPPortIsUse(int port)
+        {
+            if (port >= 65535 && 0>port)
+            {
+                throw new ArgumentException("Port must in 1~65535");
+            }
+            var portUsed = GetAllUsePort().TcpPorts;
+            return portUsed.Contains(port);
+        }
+
+
+        /// <summary>
+        /// 检测UDP端口是否已被使用
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public static bool CheckUDPPortIsUse(int port)
+        {
+            if (port >= 65535 && 0 > port)
+            {
+                throw new ArgumentException("Port must in 1~65535");
+            }
+            var portUsed = GetAllUsePort().UdpPorts;
+            return portUsed.Contains(port);
         }
     }
 }

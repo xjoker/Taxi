@@ -106,6 +106,9 @@
 * NetworkTools.DomainToIP  域名解析为IP地址
 * NetworkTools.GetLocalIPs  获取本机所有网卡的IP地址
 * NetworkTools.GetLocalMacs  获取本机所有网卡的MAC地址
+* NetworkTools.GetAllUsePort  获取所有在用状态的TCP/UDP端口
+* NetworkTools.CheckTCPPortIsUse  检测TCP端口是否已被使用
+* NetworkTools.CheckUDPPortIsUse  检测UDP端口是否已被使用
 
 
 ### Windows 共享操作

@@ -52,5 +52,12 @@ namespace Taxi.Network.Tests
             var b = NetworkTools.GetLocalMacs();
             Assert.IsFalse(b == null);
         }
+
+        [TestMethod()]
+        public void GetAllUsePortTest()
+        {
+            var b = NetworkTools.GetAllUsePort();
+            Assert.IsFalse(b == null);
+        }
     }
 }
