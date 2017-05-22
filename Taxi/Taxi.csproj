@@ -50,6 +50,7 @@
     <Compile Include="EncryptsAndDecrypts\PasswordHash.cs" />
     <Compile Include="EncryptsAndDecrypts\TokenHelper.cs" />
     <Compile Include="EncryptsAndDecrypts\UnixMd5CryptTool.cs" />
+    <Compile Include="EnumHelper\EnumHelper.cs" />
     <Compile Include="FileHelper\FileHelper.cs" />
     <Compile Include="FileHelper\IniFileHelper.cs" />
     <Compile Include="List\ListHelper.cs" />

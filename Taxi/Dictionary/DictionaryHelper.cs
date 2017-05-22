@@ -129,5 +129,43 @@ namespace Taxi.Dictionary
             }
             return t;
         }
+
+        /// <summary>
+        /// 字典相等比较
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        public static bool DictionaryEqual<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        {
+            return first.DictionaryEqual(second, null);
+        }
+
+        /// <summary>
+        /// 字典相等比较
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <param name="valueComparer"></param>
+        /// <returns></returns>
+        public static bool DictionaryEqual<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second,IEqualityComparer<TValue> valueComparer)
+        {
+            if (first == second) return true;
+            if ((first == null) || (second == null)) return false;
+            if (first.Count != second.Count) return false;
+
+            valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
+
+            foreach (var kvp in first)
+            {
+                if (!second.TryGetValue(kvp.Key, out TValue secondValue)) return false;
+                if (!valueComparer.Equals(kvp.Value, secondValue)) return false;
+            }
+            return true;
+        }
     }
 }

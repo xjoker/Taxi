@@ -57,6 +57,7 @@
     <Compile Include="Dictionary\DictionaryHelperTests.cs" />
     <Compile Include="EncryptsAndDecrypts\AESEncryptsAndDecryptsTests.cs" />
     <Compile Include="EncryptsAndDecrypts\PasswordHashTests.cs" />
+    <Compile Include="EnumHelper\EnumHelperTests.cs" />
     <Compile Include="FileHelper\FileHelperTests.cs" />
     <Compile Include="Log\LogTests.cs" />
     <Compile Include="Network\NetworkToolsTests.cs" />

@@ -32,6 +32,7 @@
 * DictionaryHelper.GetValue 获取字典key的值，如果没有结果则返回空或者指定的值
 * DictionaryHelper.AddRange 向字典中批量添加键值对
 * DictionaryHelper.DictionarySort 字典简单排序(默认以值做基准正向排序)
+* DictionaryHelper.DictionaryEqual 字典相等比较
 
 
 ### AES
@@ -143,9 +144,18 @@
 * WMIHelper.WMIRemoteQueryHelper  WMI 远程查询帮助类 多个重载
 * WMIHelper.WMIQueryHelper  WMI 查询帮助类 多个重载
 
+
 ### 随机帮助类
 * RandomHelper.GenerateRandomNumber 生成随机数字,取值范围为(0-9)
 * RandomHelper.GenerateRandomString 生成随机字符串,字符范围为(0-9 a-b A-B)
 * RandomHelper.GenerateRandomString 生成随机字符串,字符范围为(a-b)或者(A-B)
 * RandomHelper.GenerateRandomPassword 生成随机密码
 * RandomHelper.GetRandomString  随机类的基础生成方法
+
+
+### 枚举帮助类
+* EnumHelper.ToEnum  String类型转为对应的Enum类型
+* EnumHelper.ToEnumName  将枚举类型的枚举项转换为List<String>
+* EnumHelper.GetIntValue  获得Enum项对应的数值
+* EnumHelper.GetDescription  获取Enum项的描述信息
+* EnumHelper.ToDictionary  Enum 转换为字典类型 Dictionary<int, string>
