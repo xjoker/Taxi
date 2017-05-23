@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Taxi.Dictionary;
+using Taxi.List;
 
 namespace Taxi.EnumHelper.Tests
 {
@@ -35,7 +36,7 @@ namespace Taxi.EnumHelper.Tests
         {
             var b = new List<string>{"A","B","C"};
             var d = EnumHelper.ToEnumName<TestEnum>();
-            Assert.IsTrue(b == d);
+            Assert.IsTrue(b.Compare(d));
         }
 
         [TestMethod()]

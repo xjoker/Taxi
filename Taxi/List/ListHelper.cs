@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Taxi.List
 {
@@ -28,6 +25,18 @@ namespace Taxi.List
         public static List<string> Search(this List<string> t,string word)
         {
             return t.Where(e => e.ToLower().Contains(word.ToLower())).ToList();
+        }
+
+        /// <summary>
+        /// List 对比相等
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list1"></param>
+        /// <param name="list2"></param>
+        /// <returns></returns>
+        public static bool Compare<T>(this List<T> list1,List<T> list2)
+        {
+            return !list1.Except(list2).ToList().Any() && !list2.Except(list1).ToList().Any();
         }
     }
 }

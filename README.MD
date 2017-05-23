@@ -93,6 +93,7 @@
 ### List类
 * ListHelper.GetLast 获取List内最后一个元素
 * ListHelper.Search List 搜索功能
+* ListHelper.Compare List 对比相等
 
 
 ### 简便的日志类
