@@ -162,8 +162,15 @@ namespace Taxi.Dictionary
 
             foreach (var kvp in first)
             {
-                if (!second.TryGetValue(kvp.Key, out TValue secondValue)) return false;
-                if (!valueComparer.Equals(kvp.Value, secondValue)) return false;
+                if (!second.TryGetValue(kvp.Key, out TValue secondValue))
+                {
+                    return false;
+                }
+
+                if (!valueComparer.Equals(kvp.Value, secondValue))
+                {
+                    return false;
+                }
             }
             return true;
         }
