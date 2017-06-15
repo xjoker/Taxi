@@ -1,10 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Taxi.EncryptsAndDecrypts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Taxi.EncryptsAndDecrypts.Tests
 {
@@ -12,30 +7,22 @@ namespace Taxi.EncryptsAndDecrypts.Tests
     public class AESEncryptsAndDecryptsTests
     {
         [TestMethod()]
-        public void IVToBytesTest()
-        {
-            AESEncryptsAndDecrypts.IVToBytes("zxcvbnmdfrasdfgh");
-            var b = new byte[] { 122, 120, 99, 118, 98, 110, 109, 100, 102, 114, 97, 115, 100, 102, 103, 104 };
-            var c = AESEncryptsAndDecrypts.IVbytes;
-            Assert.IsTrue(b.SequenceEqual(c));
-        }
-
-        [TestMethod()]
         public void EncryptTest()
         {
-            AESEncryptsAndDecrypts.IVToBytes("zxcvbnmdfrasdfgh");
-            var b = AESEncryptsAndDecrypts.Encrypt("TestEncrypt", "dofkrfaosrdedofkrfaosrdedofkrfao");
-            string check = "MXViaOyMmTi78y3YHZFMZA==";
-            Assert.AreEqual(b, check);
+            using (Aes myAes = Aes.Create())
+            {
+                var b = AESEncryptsAndDecrypts.Encrypt("TestEncrypt", "dofkrfaosrdedofkrfaosrdedofkrfao", myAes.IV);
+                var c = AESEncryptsAndDecrypts.Decrypt(b, "dofkrfaosrdedofkrfaosrdedofkrfao", myAes.IV);
+                Assert.IsTrue(c=="TestEncrypt");
+            }
         }
 
         [TestMethod()]
-        public void DecryptTest()
+        public void SimpleEncryptTest()
         {
-            AESEncryptsAndDecrypts.IVToBytes("zxcvbnmdfrasdfgh");
-            var b = AESEncryptsAndDecrypts.Decrypt("MXViaOyMmTi78y3YHZFMZA==", "dofkrfaosrdedofkrfaosrdedofkrfao");
-            string check = "TestEncrypt";
-            Assert.AreEqual(b, check);
+            var b = AESEncryptsAndDecrypts.SimpleEncrypt("TestEncrypt", "123456");
+            var c = AESEncryptsAndDecrypts.SimpleDecrypt(b, "123456");
+            Assert.IsTrue(c=="TestEncrypt");
         }
     }
 }

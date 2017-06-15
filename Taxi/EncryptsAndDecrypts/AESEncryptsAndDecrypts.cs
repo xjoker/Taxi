@@ -1,51 +1,72 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Taxi.StringHelper;
 
 namespace Taxi.EncryptsAndDecrypts
 {
     public static class AESEncryptsAndDecrypts
     {
+        private static byte[] staticIV = new byte[] { 122, 120, 99, 118, 98, 110, 109, 100, 102, 114, 97, 115, 100, 102, 103, 104 };
 
-        public static byte[] IVbytes = null;
-        // 设定IV
-        public static void IVToBytes(string ivString)
+        /// <summary>
+        /// 简单AES加密 可使用任意长度密钥
+        /// </summary>
+        /// <param name="text">明文</param>
+        /// <param name="SecretKey">Key</param>
+        /// <returns></returns>
+        public static string SimpleEncrypt(this string text, string SecretKey)
         {
-            IVbytes = Encoding.UTF8.GetBytes(ivString);
+            string md5SecretKey = MD5Hash.GetMd5Hash(SecretKey);
+            return Encrypt(text, md5SecretKey, staticIV);
         }
+
+        /// <summary>
+        /// 简单AES解密 只可以解密由 SimpleEncrypt 加密的
+        /// </summary>
+        /// <param name="text">明文</param>
+        /// <param name="SecretKey">Key</param>
+        /// <returns></returns>
+        public static string SimpleDecrypt(this string text, string SecretKey)
+        {
+            string md5SecretKey = MD5Hash.GetMd5Hash(SecretKey);
+            return Decrypt(text, md5SecretKey, staticIV);
+        }
+
 
         /// <summary>
         /// AES 加密模块
         /// </summary>
         /// <param name="text">明文</param>
         /// <param name="SecretKey">Key</param>
-        /// <param name="ivString">IV</param>
+        /// <param name="IV">IV</param>
         /// <returns>Base64编码的String</returns>
-        public static string Encrypt(this string text, string SecretKey,string ivString=null)
+        public static string Encrypt(this string text, string SecretKey, Byte[] IV)
         {
-            if (!ivString.IsNullOrWhiteSpace())
-            {
-                IVToBytes(ivString);
-            }
+            var key = Encoding.UTF8.GetBytes(SecretKey);
 
-            if (IVbytes == null)
+            using (var aesAlg = Aes.Create())
             {
-                return null;
-            }
+                byte[] encrypted;
+                aesAlg.Key = key;
+                aesAlg.IV = IV;
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
-            byte[] plaintextbytes = Encoding.UTF8.GetBytes(text);
-            AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-            aes.BlockSize = 128;
-            aes.Key = Encoding.UTF8.GetBytes(SecretKey);
-            aes.IV = IVbytes;
-            aes.Padding = PaddingMode.PKCS7;
-            aes.Mode = CipherMode.CBC;
-            ICryptoTransform crypto = aes.CreateEncryptor(aes.Key, aes.IV);
-            byte[] encrypted = crypto.TransformFinalBlock(plaintextbytes, 0, plaintextbytes.Length);
-            crypto.Dispose();
-            return Convert.ToBase64String(encrypted.ToArray());
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+
+                            swEncrypt.Write(text);
+                        }
+                        encrypted = msEncrypt.ToArray();
+                    }
+                }
+
+                return Convert.ToBase64String(encrypted);
+            }
         }
 
         /// <summary>
@@ -53,32 +74,38 @@ namespace Taxi.EncryptsAndDecrypts
         /// </summary>
         /// <param name="encrypted">密文</param>
         /// <param name="SecretKey">Key</param>
-        /// <param name="ivString">IV</param>
+        /// <param name="IV">IV</param>
         /// <returns>UTF-8编码的String</returns>
-        public static string Decrypt(string encrypted, string SecretKey, string ivString = null)
+        public static string Decrypt(string cipherText, string SecretKey, Byte[] IV)
         {
-            if (!ivString.IsNullOrWhiteSpace())
+            string plaintext = null;
+            var fullCipher = Convert.FromBase64String(cipherText);
+            // Create an Aes object
+            // with the specified key and IV.
+            using (Aes aesAlg = Aes.Create())
             {
-                IVToBytes(ivString);
+                aesAlg.Key = Encoding.UTF8.GetBytes(SecretKey);
+                aesAlg.IV = IV;
+                // Create a decrytor to perform the stream transform.
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                // Create the streams used for decryption.
+                using (MemoryStream msDecrypt = new MemoryStream(fullCipher))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+
+                            // Read the decrypted bytes from the decrypting  stream
+                            // and place them in a string.
+                            plaintext = srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+
+                return plaintext;
             }
-
-            if (IVbytes == null)
-            {
-                return null;
-            }
-
-            byte[] encryptedbytes = Convert.FromBase64String(encrypted);
-            AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-            aes.BlockSize = 128;
-            aes.Key = Encoding.UTF8.GetBytes(SecretKey);
-            aes.IV = IVbytes;
-            aes.Padding = PaddingMode.PKCS7;
-            aes.Mode = CipherMode.CBC;
-            ICryptoTransform crypto = aes.CreateDecryptor(aes.Key, aes.IV);
-            byte[] secret = crypto.TransformFinalBlock(encryptedbytes, 0, encryptedbytes.Length);
-            crypto.Dispose();
-            return Encoding.UTF8.GetString(secret);
-
         }
     }
 }
