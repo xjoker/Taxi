@@ -47,8 +47,7 @@ namespace Taxi.StringHelper
         /// <returns></returns>
         public static bool IsInt(this string s)
         {
-            int i;
-            return int.TryParse(s, out i);
+            return int.TryParse(s, out int i);
         }
 
         /// <summary>
@@ -99,24 +98,18 @@ namespace Taxi.StringHelper
         /// <param name="s1"></param>
         /// <param name="s2"></param>
         /// <returns></returns>
-        public static bool IsEqualsString(this string s1,string s2)
+        public static bool IsEqualsString(this string s1,string s2,bool IgnoreCase=false)
         {
-            return string.Equals(s1, s2);
+            if (IgnoreCase)
+            {
+                return string.Equals(s1, s2);
+            }
+            else
+            {
+                return string.Equals(s1.ToLower(), s2.ToLower());
+            }
         }
-
-        /// <summary>
-        /// 忽略大小写对比
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="toCheck"></param>
-        /// <param name="comp"></param>
-        /// <returns></returns>
-        public static bool ContainsIgnoreCase(this string source, string toCheck)
-        {
-            return source.ToUpper().Contains(toCheck.ToUpper());
-        }
-
-
+        
         /// <summary>
         /// 将文本快速写入文件
         /// </summary>
